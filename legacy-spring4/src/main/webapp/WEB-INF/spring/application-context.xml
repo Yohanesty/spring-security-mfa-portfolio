@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="totpService" class="com.example.legacy.mfa.service.TotpService"/>
+  <bean id="mfaRepository" class="com.example.legacy.mfa.service.InMemoryMfaRepository">
+    <!-- RFC 6238 public TEST VECTOR only. Never use in production. -->
+    <property name="demoSeed" value="demo,GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"/>
+  </bean>
+  <bean id="mfaService" class="com.example.legacy.mfa.service.MfaService">
+    <property name="repository" ref="mfaRepository"/>
+    <property name="totp" ref="totpService"/>
+  </bean>
+</beans>
