@@ -13,7 +13,11 @@ public class InMemoryMfaRepository implements MfaRepository {
         long lockedUntil;
         State(String seed) { this.seed = seed; }
     }
-    public void setDemoSeed(String username, String seed) { users.put(username, new State(seed)); }
+    public void setDemoSeed(String value) {
+        String[] parts = value.split(",", 2);
+        if (parts.length != 2) throw new IllegalArgumentException("Expected username,base32");
+        users.put(parts[0], new State(parts[1]));
+    }
     @Override public String encryptedSecret(String username) {
         State s = users.get(username); return s == null ? null : s.seed;
     }
