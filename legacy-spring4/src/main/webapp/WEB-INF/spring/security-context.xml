@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+ xmlns:beans="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-4.2.xsd
+ http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- Demo only: CSRF disabled to keep the legacy reference minimal. -->
+  <http use-expressions="true" entry-point-ref="loginEntryPoint">
+    <intercept-url pattern="/login" access="permitAll"/>
+    <intercept-url pattern="/login/password" access="permitAll"/>
+    <intercept-url pattern="/mfa/challenge" access="permitAll"/>
+    <intercept-url pattern="/mfa/verify" access="permitAll"/>
+    <intercept-url pattern="/**" access="hasRole('USER')"/>
+    <custom-filter position="FORM_LOGIN_FILTER" ref="passwordFilter"/>
+    <custom-filter position="BASIC_AUTH_FILTER" ref="otpFilter"/>
+    <csrf disabled="true"/>
+  </http>
+
+  <beans:bean id="loginEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+    <beans:constructor-arg value="/login"/>
+  </beans:bean>
+
+  <authentication-manager alias="authenticationManager">
+    <authentication-provider ref="passwordProvider"/>
+    <authentication-provider ref="otpProvider"/>
+  </authentication-manager>
+
+  <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+  <beans:bean id="demoUserService" class="com.example.legacy.mfa.security.DemoUserDetailsService"/>
+  <beans:bean id="passwordProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <beans:property name="userDetailsService" ref="demoUserService"/>
+    <beans:property name="passwordEncoder" ref="passwordEncoder"/>
+  </beans:bean>
+  <beans:bean id="otpProvider" class="com.example.legacy.mfa.security.OtpAuthenticationProvider">
+    <beans:property name="service" ref="mfaService"/>
+  </beans:bean>
+  <beans:bean id="passwordFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+    <beans:property name="filterProcessesUrl" value="/login/password"/>
+    <beans:property name="authenticationManager" ref="authenticationManager"/>
+    <beans:property name="authenticationSuccessHandler">
+      <beans:bean class="com.example.legacy.mfa.security.PendingMfaAuthenticationSuccessHandler"/>
+    </beans:property>
+    <beans:property name="authenticationFailureHandler">
+      <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:constructor-arg value="/login?error"/>
+      </beans:bean>
+    </beans:property>
+  </beans:bean>
+  <beans:bean id="otpFilter" class="com.example.legacy.mfa.security.OtpAuthenticationFilter">
+    <beans:property name="authenticationManager" ref="authenticationManager"/>
+    <beans:property name="authenticationSuccessHandler">
+      <beans:bean class="com.example.legacy.mfa.security.MfaCompletionSuccessHandler"/>
+    </beans:property>
+    <beans:property name="authenticationFailureHandler">
+      <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:constructor-arg value="/mfa/challenge?error"/>
+      </beans:bean>
+    </beans:property>
+  </beans:bean>
+</beans:beans>
