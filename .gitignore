@@ -1,0 +1,13 @@
+target/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.env
+.env.*
+cookies.txt
+*.log
+*.kdbx
+*.jks
+*.p12
