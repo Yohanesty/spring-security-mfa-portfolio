@@ -2,7 +2,13 @@
 
 Legacy Spring Web 인증 고도화 경험을 TOTP 기반 MFA로 일반화한 **Backend Security Engineering Case Study**입니다. Java 21, Spring Boot 3, Spring Security 6, Spring Data JPA, H2 기반의 독립 예제로 구성했으며 회사 소스·고객정보·내부 URL·실제 Credential은 포함하지 않습니다.
 
-## What is implemented
+## Production Experience Boundary
+
+실제 운영 경험의 범위는 **Java 8 / Spring 4 / Spring Security 환경에서 기존 ID/PW·IP 제한 흐름을 유지하면서 AuthenticationProvider를 확장해 TOTP 2단계 인증을 운영 적용한 것**입니다.
+
+아래 Demo의 Spring Boot 3/Java 21, Enrollment API, Replay Prevention, Recovery Code 등은 공개 저장소에서 보안 설계 요소를 설명하기 위해 추가한 **Reference Implementation**이며, 모두를 운영 시스템에 구현했다는 의미가 아닙니다.
+
+## Reference Demo Scope
 - BCrypt password verification and an unauthenticated, five-minute pending session
 - RFC 6238 TOTP (SHA-1, six digits, 30-second period, ±1 time step)
 - Enrollment through a Base32 secret / `otpauth://` URI (Google Authenticator or KeePassXC)
