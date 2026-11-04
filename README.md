@@ -49,3 +49,10 @@ The source is committed but has **not been compiled or tested in CI in this sess
 
 ## Portfolio context
 Designed to illustrate modernization of legacy username/password authentication. This public repository contains newly written example code, not a sanitized copy of a proprietary application.
+
+
+## Related Portfolio
+
+- [Financial Application Architecture Portfolio](https://github.com/Yohanesty/financial-application-architecture-portfolio) — 분산 Application 통합, Legacy Interface Compatibility, Runtime Isolation을 포함한 상위 Architecture 사례
+- [JWT + Redis Image Viewer Portfolio](https://github.com/Yohanesty/jwt-redis-image-viewer-portfolio-) — JWT와 Redis를 이용한 Backend 접근제어 및 Viewer Session 사례
+- [Zabbix Monitoring & Operations Portfolio](https://github.com/Yohanesty/zabbix-monitoring-portfolio) — Application 운영 가시성과 조건부 자동조치 사례
