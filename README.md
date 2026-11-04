@@ -1,6 +1,6 @@
 # Spring Security MFA Portfolio
 
-**Independent educational demo** of two-step authentication using Java 21, Spring Boot 3, Spring Security 6, Spring Data JPA, and H2. No employer source, customer information, internal URLs or real credentials are included.
+Legacy Spring Web 인증 고도화 경험을 TOTP 기반 MFA로 일반화한 **Backend Security Engineering Case Study**입니다. Java 21, Spring Boot 3, Spring Security 6, Spring Data JPA, H2 기반의 독립 예제로 구성했으며 회사 소스·고객정보·내부 URL·실제 Credential은 포함하지 않습니다.
 
 ## What is implemented
 - BCrypt password verification and an unauthenticated, five-minute pending session
